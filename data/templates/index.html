@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coworking Space Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Coworking Space Tracker</h1>
+            <p class="text-gray-600">Real-time occupancy and member management</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left Column -->
+            <div class="space-y-6">
+                <!-- Check-in Form -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl font-semibold mb-4">Member Sign In/Out</h2>
+                    
+                    <form id="signForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                            <input type="text" id="name" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Enter your full name">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Telephone (Optional)</label>
+                            <input type="tel" id="telephone"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Enter your phone number">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Membership Type</label>
+                            <select id="membership"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <optgroup label="Daily Passes">
+                                    <option value="Half Day Pass">Half Day Pass</option>
+                                    <option value="Full Day Pass">Full Day Pass</option>
+                                </optgroup>
+                                <optgroup label="Memberships">
+                                    <option value="Weekly Membership">Weekly Membership (7 days)</option>
+                                    <option value="Bi-Weekly Membership">Bi-Weekly Membership (14 days)</option>
+                                    <option value="Monthly Membership">Monthly Membership (30 days)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- Subscriber Info Display -->
+                        <div id="subscriberInfo" class="hidden p-3 bg-blue-50 border border-blue-200 rounded-md">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="font-semibold text-blue-800">Welcome back! 🎉</div>
+                                    <div id="subscriberDetails" class="text-sm text-blue-600"></div>
+                                    <div id="membershipStatus" class="text-sm mt-1"></div>
+                                    <div id="unpaidWarning" class="text-sm mt-1"></div>
+                                </div>
+                                <button type="button" id="clearSubscriber" class="text-blue-500 hover:text-blue-700 ml-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <button type="submit" id="checkinButton"
+                                class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                                Check In
+                            </button>
+                            <button type="button" id="checkoutButton"
+                                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                                Check Out
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Mark Unpaid Section -->
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <h3 class="text-lg font-semibold mb-3 text-red-600">⚠️ Unpaid Customer</h3>
+                        <div class="space-y-3">
+                            <input type="number" id="unpaidAmount" placeholder="Amount owed" 
+                                class="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <input type="text" id="unpaidReason" placeholder="Reason (e.g., left without paying)" 
+                                class="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <button type="button" id="markUnpaidButton"
+                                class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                                🚨 Mark as Unpaid
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="message" class="mt-4 hidden p-3 rounded-md"></div>
+                </div>
+
+                <!-- Prices and Policy -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl font-semibold mb-4">Prices and Policy</h2>
+                    
+                    <!-- Free Drink Message -->
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                        <div class="flex items-center">
+                            <div class="text-yellow-800">
+                                <p class="font-semibold">🎉 Free Drink Included!</p>
+                                <p class="text-sm mt-1">All passes and memberships include one complimentary drink. Don't forget to ask for your free drink at the counter!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Daily Passes -->
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-2 border-b pb-1">Daily Passes</h3>
+                            <div class="space-y-2">
+                                {% for membership, rates in rate_card.items() if rates.unit == 'DAILY_FLAT' %}
+                                <div class="flex justify-between items-center p-2 bg-blue-50 rounded">
+                                    <div class="flex-1">
+                                        <div class="font-semibold">{{ membership }}</div>
+                                        <div class="text-xs text-gray-600">{{ rates.note }}</div>
+                                    </div>
+                                    <div class="text-right text-sm">
+                                        <div class="text-green-600 font-bold">${{ "%.2f"|format(rates.rate_usd) }} USD</div>
+                                        <div class="text-blue-600 font-bold">£{{ "%.2f"|format(rates.rate_egp) }} EGP</div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Memberships -->
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-2 border-b pb-1">Memberships (Consecutive Days)</h3>
+                            <div class="space-y-2">
+                                {% for membership, rates in rate_card.items() if 'MEMBER' in rates.unit %}
+                                <div class="flex justify-between items-center p-2 bg-green-50 rounded">
+                                    <div class="flex-1">
+                                        <div class="font-semibold">{{ membership }}</div>
+                                        <div class="text-xs text-gray-600">{{ rates.note }} - Valid for {{ rates.duration_days }} consecutive days</div>
+                                    </div>
+                                    <div class="text-right text-sm">
+                                        <div class="text-green-600 font-bold">${{ "%.2f"|format(rates.rate_usd) }} USD</div>
+                                        <div class="text-blue-600 font-bold">£{{ "%.2f"|format(rates.rate_egp) }} EGP</div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admin Tools -->
+                    <div class="mt-6 pt-4 border-t border-gray-200 space-y-3">
+                        <button type="button" id="incomeCalculatorBtn"
+                            class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                            📊 Calculate Income
+                        </button>
+                        <button type="button" id="generateReportBtn"
+                            class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                            📈 Generate Daily Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Occupancy Dashboard -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Today's Occupancy</h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-500" id="todayDate">{{ today_date }}</span>
+                        <span id="occupancyCount" class="bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                            {{ occupancy|length }} members
+                        </span>
+                    </div>
+                </div>
+
+                <div id="occupancyList" class="space-y-2">
+                    {% if occupancy %}
+                        {% for person in occupancy %}
+                        <div class="p-3 border rounded {% if person.is_unpaid %}bg-red-50 border-red-200{% else %}bg-green-50 border-green-200{% endif %}">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-semibold text-lg {% if person.is_unpaid %}text-red-700{% endif %}">
+                                    {{ person.name }}
+                                    {% if person.is_unpaid %} ⚠️{% endif %}
+                                </div>
+                                <span class="{% if person.is_unpaid %}bg-red-500{% else %}bg-green-500{% endif %} text-white px-2 py-1 rounded text-xs">
+                                    {% if person.is_unpaid %}UNPAID{% else %}CHECKED IN{% endif %}
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-600 mb-1">
+                                <span class="font-medium">{{ person.membership }}</span> • {{ person.check_in_display }}
+                            </div>
+                            {% if person.telephone %}
+                            <div class="text-xs text-gray-500 mb-1">
+                                Tel: {{ person.telephone }}
+                            </div>
+                            {% endif %}
+                            <div class="text-xs text-gray-500">
+                                {% if person.unit_type == 'DAILY_FLAT' %}
+                                <span class="text-green-600">Charged: ${{ "%.2f"|format(person.rate_usd) }} USD / £{{ "%.2f"|format(person.rate_egp) }} EGP</span>
+                                {% else %}
+                                    {% if person.membership_status %}
+                                        {% if person.membership_status.status == 'new' %}
+                                        <span class="text-green-600">🎉 New membership! {{ person.membership_status.days_remaining }} days remaining</span>
+                                        {% elif person.membership_status.status == 'active' %}
+                                            {% if person.membership_status.days_remaining <= 3 %}
+                                            <span class="text-orange-500">⚠️ Expires in {{ person.membership_status.days_remaining }} days</span>
+                                            {% else %}
+                                            <span class="text-blue-600">✅ {{ person.membership_status.days_remaining }} days remaining</span>
+                                            {% endif %}
+                                        {% elif person.membership_status.status == 'expired' %}
+                                        <span class="text-red-600">❌ Membership expired</span>
+                                        {% endif %}
+                                    {% else %}
+                                    <span class="text-blue-600">Membership Session (Pre-paid)</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-6 text-gray-500">
+                            <p>No members currently checked in today</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income Calculator Modal -->
+    <div id="incomeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-96 max-h-96 overflow-y-auto">
+            <h3 class="text-xl font-semibold mb-4">Income Calculator</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="incomePassword"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="Enter admin password">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                        <input type="date" id="startDate"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                        <input type="date" id="endDate"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500">Leave dates empty for today's income</p>
+                
+                <div class="flex space-x-3">
+                    <button type="button" id="calculateIncomeBtn"
+                        class="flex-1 bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                        Calculate
+                    </button>
+                    <button type="button" id="closeIncomeModal"
+                        class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            <div id="incomeResult" class="mt-4 hidden p-3 rounded-md"></div>
+        </div>
+    </div>
+
+    <!-- Daily Report Modal -->
+    <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-11/12 max-w-4xl max-h-96 overflow-y-auto">
+            <h3 class="text-xl font-semibold mb-4">Daily Report Generator</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="reportPassword"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Enter admin password">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Report Date</label>
+                    <input type="date" id="reportDate"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div class="flex space-x-3">
+                    <button type="button" id="generateReportModalBtn"
+                        class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                        Generate Report
+                    </button>
+                    <button type="button" id="closeReportModal"
+                        class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            <div id="reportResult" class="mt-4 hidden p-3 rounded-md"></div>
+        </div>
+    </div>
+
+    <script>
+        // Critical fix for JSON data transfer
+        const initialOccupancy = {{ occupancy | tojson | safe }};
+        let currentOccupancy = initialOccupancy;
+
+        const signForm = document.getElementById('signForm');
+        const checkinButton = document.getElementById('checkinButton');
+        const checkoutButton = document.getElementById('checkoutButton');
+        const messageDiv = document.getElementById('message');
+        const occupancyList = document.getElementById('occupancyList');
+        const occupancyCount = document.getElementById('occupancyCount');
+        const nameInput = document.getElementById('name');
+        const telephoneInput = document.getElementById('telephone');
+        const membershipSelect = document.getElementById('membership');
+        const subscriberInfo = document.getElementById('subscriberInfo');
+        const subscriberDetails = document.getElementById('subscriberDetails');
+        const membershipStatus = document.getElementById('membershipStatus');
+        const unpaidWarning = document.getElementById('unpaidWarning');
+        const clearSubscriber = document.getElementById('clearSubscriber');
+        const markUnpaidButton = document.getElementById('markUnpaidButton');
+        const unpaidAmount = document.getElementById('unpaidAmount');
+        const unpaidReason = document.getElementById('unpaidReason');
+        const generateReportBtn = document.getElementById('generateReportBtn');
+
+        // Income calculator elements
+        const incomeCalculatorBtn = document.getElementById('incomeCalculatorBtn');
+        const incomeModal = document.getElementById('incomeModal');
+        const incomePassword = document.getElementById('incomePassword');
+        const startDate = document.getElementById('startDate');
+        const endDate = document.getElementById('endDate');
+        const calculateIncomeBtn = document.getElementById('calculateIncomeBtn');
+        const closeIncomeModal = document.getElementById('closeIncomeModal');
+        const incomeResult = document.getElementById('incomeResult');
+
+        // Report generator elements
+        const reportModal = document.getElementById('reportModal');
+        const reportPassword = document.getElementById('reportPassword');
+        const reportDate = document.getElementById('reportDate');
+        const generateReportModalBtn = document.getElementById('generateReportModalBtn');
+        const closeReportModal = document.getElementById('closeReportModal');
+        const reportResult = document.getElementById('reportResult');
+
+        // Set default dates
+        const today = new Date().toISOString().split('T')[0];
+        startDate.value = today;
+        endDate.value = today;
+        reportDate.value = today;
+
+        // Subscriber lookup when name/telephone changes
+        let subscriberLookupTimeout;
+        function setupSubscriberLookup() {
+            nameInput.addEventListener('input', debounceSubscriberLookup);
+            telephoneInput.addEventListener('input', debounceSubscriberLookup);
+        }
+
+        function debounceSubscriberLookup() {
+            clearTimeout(subscriberLookupTimeout);
+            subscriberLookupTimeout = setTimeout(performSubscriberLookup, 500);
+        }
+
+        async function performSubscriberLookup() {
+            const name = nameInput.value.trim();
+            const telephone = telephoneInput.value.trim();
+            
+            if (name.length < 2) {
+                subscriberInfo.classList.add('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/get_subscriber?name=${encodeURIComponent(name)}&telephone=${encodeURIComponent(telephone)}`);
+                const data = await response.json();
+                
+                if (data.found) {
+                    const lastSeen = new Date(data.last_seen);
+                    const formattedDate = lastSeen.toLocaleDateString();
+                    
+                    let detailsHTML = `
+                        <div><strong>Last visit:</strong> ${formattedDate}</div>
+                        <div><strong>Total visits:</strong> ${data.total_visits}</div>
+                        <div><strong>Last membership:</strong> ${data.last_membership}</div>
+                        <div><strong>Suggested:</strong> ${data.suggested_membership}</div>
+                    `;
+                    
+                    let statusHTML = '';
+                    let warningHTML = '';
+                    
+                    if (data.has_active_membership) {
+                        const membership = data.active_membership;
+                        if (membership.is_expired) {
+                            statusHTML = `<div class="text-red-600 font-semibold">❌ ${membership.type} EXPIRED</div>`;
+                        } else if (membership.days_remaining <= 3) {
+                            statusHTML = `<div class="text-orange-500 font-semibold">⚠️ ${membership.type} - ${membership.days_remaining} days left</div>`;
+                        } else {
+                            statusHTML = `<div class="text-green-600 font-semibold">✅ ${membership.type} - ${membership.days_remaining} days remaining</div>`;
+                        }
+                    }
+                    
+                    if (data.is_unpaid) {
+                        warningHTML = `<div class="text-red-600 font-semibold mt-2">🚨 UNPAID CUSTOMER - ${data.unpaid_info.reason}</div>`;
+                    }
+                    
+                    subscriberDetails.innerHTML = detailsHTML;
+                    membershipStatus.innerHTML = statusHTML;
+                    unpaidWarning.innerHTML = warningHTML;
+                    membershipSelect.value = data.suggested_membership;
+                    subscriberInfo.classList.remove('hidden');
+                } else {
+                    subscriberInfo.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error fetching subscriber data:', error);
+            }
+        }
+
+        clearSubscriber.addEventListener('click', function() {
+            subscriberInfo.classList.add('hidden');
+            nameInput.value = '';
+            telephoneInput.value = '';
+            nameInput.focus();
+        });
+
+        // Mark unpaid handler
+        markUnpaidButton.addEventListener('click', async function() {
+            const name = nameInput.value.trim();
+            const telephone = telephoneInput.value.trim();
+            const amount = unpaidAmount.value.trim();
+            const reason = unpaidReason.value.trim();
+            
+            if (!name) {
+                showMessage('Please enter customer name', 'error');
+                return;
+            }
+            if (!amount || !reason) {
+                showMessage('Please enter amount and reason', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/mark_unpaid', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        name: name,
+                        telephone: telephone,
+                        amount: amount,
+                        reason: reason
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    unpaidAmount.value = '';
+                    unpaidReason.value = '';
+                    // Refresh subscriber info to show unpaid status
+                    performSubscriberLookup();
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Network error', 'error');
+            }
+        });
+
+        // Check In handler
+        checkinButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const name = nameInput.value.trim();
+            const telephone = telephoneInput.value.trim();
+            const membership = membershipSelect.value;
+            
+            if (!name) {
+                showMessage('Please enter your name', 'error');
+                return;
+            }
+
+            await performAction('checkin', name, telephone, membership);
+        });
+
+        // Check Out handler
+        checkoutButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const name = nameInput.value.trim();
+            const telephone = telephoneInput.value.trim();
+            
+            if (!name) {
+                showMessage('Please enter your name to check out', 'error');
+                return;
+            }
+
+            await performAction('checkout', name, telephone);
+        });
+
+        // Income Calculator handlers
+        incomeCalculatorBtn.addEventListener('click', function() {
+            incomeModal.classList.remove('hidden');
+            incomePassword.value = '';
+            incomeResult.classList.add('hidden');
+            startDate.value = today;
+            endDate.value = today;
+        });
+
+        closeIncomeModal.addEventListener('click', function() {
+            incomeModal.classList.add('hidden');
+        });
+
+        calculateIncomeBtn.addEventListener('click', async function() {
+            const password = incomePassword.value.trim();
+            const start = startDate.value;
+            const end = endDate.value;
+            
+            if (!password) {
+                showIncomeResult('Please enter password', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/calculate_income', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        password: password,
+                        start_date: start,
+                        end_date: end
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    let resultHTML = `<div class="font-semibold">${data.message}</div>`;
+                    
+                    if (data.income_data.transaction_count > 0) {
+                        resultHTML += `
+                            <div class="mt-2 text-sm">
+                                <strong>Transactions:</strong>
+                                <ul class="mt-1 space-y-1 max-h-40 overflow-y-auto">
+                                    ${data.income_data.transactions.map(t => 
+                                        `<li class="flex justify-between border-b pb-1">
+                                            <span>${t.name}</span>
+                                            <span>${t.membership} - $${t.rate_usd.toFixed(2)}</span>
+                                        </li>`
+                                    ).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    showIncomeResult(resultHTML, 'success');
+                } else {
+                    showIncomeResult(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showIncomeResult('Network error', 'error');
+            }
+        });
+
+        // Report Generator handlers
+        generateReportBtn.addEventListener('click', function() {
+            reportModal.classList.remove('hidden');
+            reportPassword.value = '';
+            reportResult.classList.add('hidden');
+            reportDate.value = today;
+        });
+
+        closeReportModal.addEventListener('click', function() {
+            reportModal.classList.add('hidden');
+        });
+
+        generateReportModalBtn.addEventListener('click', async function() {
+            const password = reportPassword.value.trim();
+            const reportDateValue = reportDate.value;
+            
+            if (!password) {
+                showReportResult('Please enter password', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/generate_report', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        password: password,
+                        report_date: reportDateValue
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    const report = data.report;
+                    let resultHTML = `
+                        <div class="font-semibold text-lg mb-4">📊 Daily Report for ${report.date}</div>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-3 rounded">
+                                <div class="text-2xl font-bold text-blue-600">${report.total_visitors}</div>
+                                <div class="text-sm text-blue-800">Total Visitors</div>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded">
+                                <div class="text-2xl font-bold text-green-600">$${report.total_income_usd.toFixed(2)}</div>
+                                <div class="text-sm text-green-800">Total Income USD</div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <strong>Membership Breakdown:</strong>
+                            <ul class="mt-1 space-y-1">
+                                ${Object.entries(report.membership_breakdown).map(([type, count]) => 
+                                    `<li>• ${type}: ${count} visitors</li>`
+                                ).join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>Visitors:</strong>
+                            <ul class="mt-1 space-y-1 max-h-40 overflow-y-auto">
+                                ${report.visitors.map(v => 
+                                    `<li>• ${v.name} - ${v.membership} (${v.check_in_display})</li>`
+                                ).join('')}
+                            </ul>
+                        </div>
+                    `;
+                    showReportResult(resultHTML, 'success');
+                } else {
+                    showReportResult(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showReportResult('Network error', 'error');
+            }
+        });
+
+        async function performAction(action, name, telephone, membership = '') {
+            try {
+                const response = await fetch('/sign_action', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        action: action,
+                        name: name,
+                        telephone: telephone,
+                        membership: membership
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    updateOccupancyDisplay(data.occupancy);
+                    
+                    // Clear form after successful checkin
+                    if (action === 'checkin') {
+                        nameInput.value = '';
+                        telephoneInput.value = '';
+                        subscriberInfo.classList.add('hidden');
+                    }
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Network error', 'error');
+            }
+        }
+
+        function updateOccupancyDisplay(occupancy) {
+            currentOccupancy = occupancy;
+            
+            if (occupancy.length === 0) {
+                occupancyList.innerHTML = '<div class="text-center py-6 text-gray-500"><p>No members currently checked in today</p></div>';
+            } else {
+                occupancyList.innerHTML = occupancy.map(person => {
+                    let statusHTML = '';
+                    if (person.unit_type === 'DAILY_FLAT') {
+                        statusHTML = `<span class="text-green-600">Charged: $${person.rate_usd.toFixed(2)} USD / £${person.rate_egp.toFixed(2)} EGP</span>`;
+                    } else if (person.membership_status) {
+                        const status = person.membership_status;
+                        if (status.status === 'new') {
+                            statusHTML = `<span class="text-green-600">🎉 New membership! ${status.days_remaining} days remaining</span>`;
+                        } else if (status.status === 'active') {
+                            if (status.days_remaining <= 3) {
+                                statusHTML = `<span class="text-orange-500">⚠️ Expires in ${status.days_remaining} days</span>`;
+                            } else {
+                                statusHTML = `<span class="text-blue-600">✅ ${status.days_remaining} days remaining</span>`;
+                            }
+                        } else if (status.status === 'expired') {
+                            statusHTML = `<span class="text-red-600">❌ Membership expired</span>`;
+                        }
+                    } else {
+                        statusHTML = `<span class="text-blue-600">Membership Session (Pre-paid)</span>`;
+                    }
+                    
+                    return `
+                        <div class="p-3 border rounded ${person.is_unpaid ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-semibold text-lg ${person.is_unpaid ? 'text-red-700' : ''}">
+                                    ${person.name}
+                                    ${person.is_unpaid ? ' ⚠️' : ''}
+                                </div>
+                                <span class="${person.is_unpaid ? 'bg-red-500' : 'bg-green-500'} text-white px-2 py-1 rounded text-xs">
+                                    ${person.is_unpaid ? 'UNPAID' : 'CHECKED IN'}
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-600 mb-1">
+                                <span class="font-medium">${person.membership}</span> • ${person.check_in_display}
+                            </div>
+                            ${person.telephone ? `
+                            <div class="text-xs text-gray-500 mb-1">
+                                Tel: ${person.telephone}
+                            </div>
+                            ` : ''}
+                            <div class="text-xs text-gray-500">
+                                ${statusHTML}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            occupancyCount.textContent = `${occupancy.length} members`;
+        }
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `mt-4 p-3 rounded-md ${
+                type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`;
+            messageDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        function showIncomeResult(html, type) {
+            incomeResult.innerHTML = html;
+            incomeResult.className = `mt-4 p-3 rounded-md ${
+                type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`;
+            incomeResult.classList.remove('hidden');
+        }
+
+        function showReportResult(html, type) {
+            reportResult.innerHTML = html;
+            reportResult.className = `mt-4 p-3 rounded-md ${
+                type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`;
+            reportResult.classList.remove('hidden');
+        }
+
+        // Real-time updates
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/occupancy');
+                const occupancy = await response.json();
+                updateOccupancyDisplay(occupancy);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }, 10000);
+
+        // Initialize subscriber lookup
+        setupSubscriberLookup();
+    </script>
+</body>
+</html>

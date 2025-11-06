@@ -1,0 +1,70 @@
+[
+  {
+    "name": "ahmed",
+    "telephone": "",
+    "identifier": "ahmed",
+    "membership": "Half Day Pass",
+    "rate_usd": 5.0,
+    "rate_egp": 250.0,
+    "unit_type": "DAILY_FLAT",
+    "note": "Charged $5.00 USD / EGP 250.00 for Half Day Session",
+    "check_in_time": "2025-11-05T18:02:39.512668",
+    "check_in_display": "06:02 PM",
+    "date": "2025-11-05",
+    "timestamp": "2025-11-05T18:02:39.512668"
+  },
+  {
+    "name": "hhh",
+    "telephone": "",
+    "identifier": "hhh",
+    "membership": "Weekly Membership",
+    "rate_usd": 45.0,
+    "rate_egp": 2250.0,
+    "unit_type": "WEEKLY_MEMBER",
+    "note": "Weekly Member Session (Fee: $45 / EGP 2,250 paid externally)",
+    "check_in_time": "2025-11-05T18:09:33.877257",
+    "check_in_display": "06:09 PM",
+    "date": "2025-11-05",
+    "timestamp": "2025-11-05T18:09:33.877257"
+  },
+  {
+    "name": "ahmed badr",
+    "telephone": "",
+    "identifier": "ahmed badr",
+    "membership": "Monthly Membership",
+    "rate_usd": 150.0,
+    "rate_egp": 7500.0,
+    "unit_type": "MONTHLY_MEMBER",
+    "note": "Monthly Member Session (Fee: $150 / EGP 7,500 paid externally)",
+    "check_in_time": "2025-11-05T19:07:39.172726",
+    "check_in_display": "07:07 PM",
+    "date": "2025-11-05",
+    "timestamp": "2025-11-05T19:07:39.172726",
+    "membership_status": {
+      "status": "new",
+      "days_remaining": 30,
+      "end_date": "2025-12-05",
+      "is_renewal": false
+    }
+  },
+  {
+    "name": "fda",
+    "telephone": "",
+    "identifier": "fda",
+    "membership": "Monthly Membership",
+    "rate_usd": 150.0,
+    "rate_egp": 7500.0,
+    "unit_type": "MONTHLY_MEMBER",
+    "note": "Monthly Member Session (Fee: $150 / EGP 7,500 paid externally)",
+    "check_in_time": "2025-11-05T19:08:12.552625",
+    "check_in_display": "07:08 PM",
+    "date": "2025-11-05",
+    "timestamp": "2025-11-05T19:08:12.552625",
+    "membership_status": {
+      "status": "new",
+      "days_remaining": 30,
+      "end_date": "2025-12-05",
+      "is_renewal": false
+    }
+  }
+]

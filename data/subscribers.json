@@ -1,0 +1,51 @@
+{
+  "ahmed badr": {
+    "name": "ahmed badr",
+    "telephone": "",
+    "membership_type": "Bi-Weekly Membership",
+    "first_seen": "2025-11-05T18:01:20.978175",
+    "last_seen": "2025-11-05T19:07:39.172726",
+    "total_visits": 2,
+    "visit_dates": [
+      "2025-11-05T18:01:20.978175",
+      "2025-11-05T19:07:39.172726"
+    ],
+    "last_membership": "Monthly Membership"
+  },
+  "ahmed": {
+    "name": "ahmed",
+    "telephone": "",
+    "membership_type": "Half Day Pass",
+    "first_seen": "2025-11-05T18:02:39.512668",
+    "last_seen": "2025-11-05T18:02:39.512668",
+    "total_visits": 1,
+    "visit_dates": [
+      "2025-11-05T18:02:39.512668"
+    ],
+    "last_membership": "Half Day Pass"
+  },
+  "hhh": {
+    "name": "hhh",
+    "telephone": "",
+    "membership_type": "Weekly Membership",
+    "first_seen": "2025-11-05T18:09:33.877257",
+    "last_seen": "2025-11-05T18:09:33.877257",
+    "total_visits": 1,
+    "visit_dates": [
+      "2025-11-05T18:09:33.877257"
+    ],
+    "last_membership": "Weekly Membership"
+  },
+  "fda": {
+    "name": "fda",
+    "telephone": "",
+    "membership_type": "Monthly Membership",
+    "first_seen": "2025-11-05T19:08:12.552625",
+    "last_seen": "2025-11-05T19:08:12.552625",
+    "total_visits": 1,
+    "visit_dates": [
+      "2025-11-05T19:08:12.552625"
+    ],
+    "last_membership": "Monthly Membership"
+  }
+}
