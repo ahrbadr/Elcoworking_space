@@ -90,5 +90,100 @@
       }
     ],
     "generated_at": "2025-11-05T21:40:11.609426"
+  },
+  "2026-03-10": {
+    "date": "2026-03-10",
+    "total_visitors": 3,
+    "total_income_usd": 160.0,
+    "total_income_egp": 8000.0,
+    "membership_breakdown": {
+      "Half Day Pass": 2,
+      "Monthly Membership": 1
+    },
+    "visitors": [
+      {
+        "name": "Ahmed Badr",
+        "telephone": "0000",
+        "identifier": "Ahmed Badr_0000",
+        "membership": "Half Day Pass",
+        "rate_usd": 5.0,
+        "rate_egp": 250.0,
+        "unit_type": "DAILY_FLAT",
+        "note": "Charged $5.00 USD / EGP 250.00 for Half Day Session",
+        "check_in_time": "2026-03-10T05:55:07.568811",
+        "check_in_display": "05:55 AM",
+        "date": "2026-03-10",
+        "timestamp": "2026-03-10T05:55:07.568811",
+        "membership_status": null,
+        "is_unpaid": false
+      },
+      {
+        "name": "test",
+        "telephone": "",
+        "identifier": "test",
+        "membership": "Half Day Pass",
+        "rate_usd": 5.0,
+        "rate_egp": 250.0,
+        "unit_type": "DAILY_FLAT",
+        "note": "Charged $5.00 USD / EGP 250.00 for Half Day Session",
+        "check_in_time": "2026-03-10T05:56:25.906099",
+        "check_in_display": "05:56 AM",
+        "date": "2026-03-10",
+        "timestamp": "2026-03-10T05:56:25.906099",
+        "membership_status": null,
+        "is_unpaid": false
+      },
+      {
+        "name": "test2",
+        "telephone": "",
+        "identifier": "test2",
+        "membership": "Monthly Membership",
+        "rate_usd": 150.0,
+        "rate_egp": 7500.0,
+        "unit_type": "MONTHLY_MEMBER",
+        "note": "Monthly Member Session (Fee: $150 / EGP 7,500 paid externally)",
+        "check_in_time": "2026-03-10T05:56:47.700029",
+        "check_in_display": "05:56 AM",
+        "date": "2026-03-10",
+        "timestamp": "2026-03-10T05:56:47.700029",
+        "membership_status": {
+          "status": "new",
+          "days_remaining": 30,
+          "end_date": "2026-04-09",
+          "is_new": true
+        },
+        "is_unpaid": false
+      }
+    ],
+    "transactions": [
+      {
+        "name": "Ahmed Badr",
+        "membership": "Half Day Pass",
+        "rate_usd": 5.0,
+        "rate_egp": 250.0,
+        "timestamp": "2026-03-10T05:55:07.568811",
+        "date": "2026-03-10",
+        "type": "daily_pass"
+      },
+      {
+        "name": "test",
+        "membership": "Half Day Pass",
+        "rate_usd": 5.0,
+        "rate_egp": 250.0,
+        "timestamp": "2026-03-10T05:56:25.906099",
+        "date": "2026-03-10",
+        "type": "daily_pass"
+      },
+      {
+        "name": "test2",
+        "membership": "Monthly Membership",
+        "rate_usd": 150.0,
+        "rate_egp": 7500.0,
+        "timestamp": "2026-03-10T05:56:47.700029",
+        "date": "2026-03-10",
+        "type": "membership_payment"
+      }
+    ],
+    "generated_at": "2026-03-10T05:57:45.263133"
   }
 }

@@ -66,5 +66,74 @@
       "end_date": "2025-12-05",
       "is_renewal": false
     }
+  },
+  {
+    "name": "Ahmed Badr",
+    "telephone": "0000",
+    "identifier": "Ahmed Badr_0000",
+    "membership": "Half Day Pass",
+    "rate_usd": 5.0,
+    "rate_egp": 250.0,
+    "unit_type": "DAILY_FLAT",
+    "note": "Charged $5.00 USD / EGP 250.00 for Half Day Session",
+    "check_in_time": "2026-03-10T05:55:07.568811",
+    "check_in_display": "05:55 AM",
+    "date": "2026-03-10",
+    "timestamp": "2026-03-10T05:55:07.568811",
+    "membership_status": null,
+    "is_unpaid": false
+  },
+  {
+    "name": "test",
+    "telephone": "",
+    "identifier": "test",
+    "membership": "Half Day Pass",
+    "rate_usd": 5.0,
+    "rate_egp": 250.0,
+    "unit_type": "DAILY_FLAT",
+    "note": "Charged $5.00 USD / EGP 250.00 for Half Day Session",
+    "check_in_time": "2026-03-10T05:56:25.906099",
+    "check_in_display": "05:56 AM",
+    "date": "2026-03-10",
+    "timestamp": "2026-03-10T05:56:25.906099",
+    "membership_status": null,
+    "is_unpaid": false
+  },
+  {
+    "name": "test2",
+    "telephone": "",
+    "identifier": "test2",
+    "membership": "Monthly Membership",
+    "rate_usd": 150.0,
+    "rate_egp": 7500.0,
+    "unit_type": "MONTHLY_MEMBER",
+    "note": "Monthly Member Session (Fee: $150 / EGP 7,500 paid externally)",
+    "check_in_time": "2026-03-10T05:56:47.700029",
+    "check_in_display": "05:56 AM",
+    "date": "2026-03-10",
+    "timestamp": "2026-03-10T05:56:47.700029",
+    "membership_status": {
+      "status": "new",
+      "days_remaining": 30,
+      "end_date": "2026-04-09",
+      "is_new": true
+    },
+    "is_unpaid": false
+  },
+  {
+    "name": "Ahmed Badrf",
+    "telephone": "",
+    "identifier": "Ahmed Badrf",
+    "membership": "Half Day Pass",
+    "rate_usd": 5.0,
+    "rate_egp": 250.0,
+    "unit_type": "DAILY_FLAT",
+    "note": "Charged $5.00 USD / EGP 250.00 for Half Day Session",
+    "check_in_time": "2026-03-10T06:08:02.462761",
+    "check_in_display": "06:08 AM",
+    "date": "2026-03-10",
+    "timestamp": "2026-03-10T06:08:02.462761",
+    "membership_status": null,
+    "is_unpaid": false
   }
 ]

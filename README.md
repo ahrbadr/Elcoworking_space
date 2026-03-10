@@ -1,7 +1,7 @@
 # Coworking Space Sign-In & Occupancy Tracker
 
 A comprehensive web application for managing coworking space operations, including member check-ins, membership tracking, payment management, and daily reporting.
-
+![Application](website.png)
 ## 🌟 Features
 
 ### Core Functionality
